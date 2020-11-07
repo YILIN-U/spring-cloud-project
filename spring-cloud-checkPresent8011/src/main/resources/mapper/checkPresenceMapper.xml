@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.springcloud.mapper.CheckPresenceMapper">
+
+    <!--    批量插入点到-->
+    <insert id="checkPresenceAdd">
+        insert into check_presence (user_code,user_name,record,record_time)
+        values
+        <foreach collection="CheckPresenceModelList" item="CheckPresenceModel" index="index" separator=",">
+            (#{CheckPresenceModel.userCode},#{CheckPresenceModel.userName},#{CheckPresenceModel.record},#{recordTime})
+        </foreach>
+    </insert>
+
+<!--    得到所有的考勤信息-->
+    <select id="getAllPresence" resultType="com.wx.springcloud.model.CheckPresenceModel">
+        select * from check_presence
+        <where>
+            1=1
+        </where>
+    </select>
+
+<!--    删除考勤信息-->
+    <delete id="checkPresenceDelete">
+        delete from check_presence where id=#{id}
+    </delete>
+
+</mapper>

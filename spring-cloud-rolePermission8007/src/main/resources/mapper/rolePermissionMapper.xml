@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.springcloud.mapper.RolePermissionMapper">
+
+    <!--    新增角色的权限数据-->
+    <insert id="rolePerAdd">
+        insert into wx_role_permission (role_code,permission_code)
+        values
+        <foreach collection="permissionCodes" item="permissionCode" index="index" separator=",">
+            (#{roleCode},#{permissionCode})
+        </foreach>
+    </insert>
+<!--    通过角色编号查询权限-->
+    <select id="getPermissionByRoleCode" resultType="com.wx.springcloud.model.RolePermissionModel">
+        select wp.permission_code,wp.permission_name from wx_permission wp where permission_code in(SELECT wrp.permission_code FROM wx_role_permission wrp where role_code=#{roleCode})
+    </select>
+
+<!--    删除角色的权限数据-->
+    <delete id="rolePerDelete">
+        delete from wx_role_permission where role_code=#{roleCode}
+    </delete>
+
+</mapper>

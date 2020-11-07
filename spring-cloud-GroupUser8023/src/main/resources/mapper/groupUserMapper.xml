@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.springcloud.mapper.GroupUserMapper">
+
+    <!--    将成员分组-->
+    <insert id="groupMemberAdd">
+        insert into wx_group_user (group_code,user_code)
+        values (#{groupCode},#{userCode})
+    </insert>
+
+<!--    将用户移出小组-->
+    <delete id="delGroupUser">
+        delete from wx_group_user where group_code=#{groupCode} and user_code=#{userCode}
+    </delete>
+
+<!--    删除小组中的所有成员-->
+    <delete id="groupUserDelAll">
+        delete from wx_group_user where group_code=#{groupCode}
+    </delete>
+
+</mapper>

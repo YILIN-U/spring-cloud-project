@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.springcloud.mapper.FavorMapping">
+
+    <!--    增加点赞数据-->
+    <insert id="favorAdd">
+        insert into favor (user_code,word_code)
+        values (#{userCode},#{wordCode})
+    </insert>
+
+<!--    查看用户是否已经对单词进行了点赞-->
+    <select id="checkWordIsAlreadyFavor" resultType="com.wx.springcloud.model.FavorModel">
+        select * from favor where user_code=#{userCode} and word_code=#{wordCode}
+    </select>
+
+<!--    删除点赞-->
+    <delete id="favorDelete">
+        delete from favor where user_code=#{userCode} and word_code=#{wordCode}
+    </delete>
+
+</mapper>

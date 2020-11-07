@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.springcloud.mapper.RoleMapper">
+
+    <!--    增加角色数据-->
+    <insert id="roleAdd">
+        insert into wx_role (role_code,role_name,status,create_time)
+        values (#{roleCode},#{roleName},#{status},#{createTime})
+    </insert>
+
+    <!--    检查是否存在-->
+    <select id="checkRole" resultType="com.wx.springcloud.model.RoleModel">
+        select * from wx_role where role_code=#{roleCode}
+    </select>
+
+    <!--    更新角色信息-->
+    <update id="roleUpdate">
+        update wx_role set
+        role_code=#{roleCode},
+        role_name=#{roleName},
+        status=#{status},
+        update_time=#{updateTime}
+        where id=#{id}
+    </update>
+
+    <!--    删除角色-->
+    <delete id="roleDelete">
+        delete from wx_role where id=#{id}
+    </delete>
+
+    <!--    查询所有角色-->
+    <select id="getAllRole" resultType="com.wx.springcloud.model.RoleModel">
+        select * from wx_role
+        <where>
+            role_delete=1
+            <if test="roleCode!='' and roleCode!=null">
+                and role_code like concat('%',#{roleCode},'%')
+            </if>
+            <if test="roleName!='' and roleName!=null">
+                and role_name like concat('%',#{roleName},'%')
+            </if>
+            <if test="status!=2 and status!=null">
+                and status=#{status}
+            </if>
+        </where>
+    </select>
+
+<!--    通过角色编号找到角色-->
+    <select id="getRoleByRoleCode" resultType="com.wx.springcloud.model.RoleModel">
+        select * from wx_role where role_code=#{roleCode}
+    </select>
+
+</mapper>

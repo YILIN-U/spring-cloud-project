@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.springcloud.mapper.GroupMapper">
+
+    <!--    增加小组数据-->
+    <insert id="groupAdd">
+        insert into wx_group (group_code,group_name,supervision,supervision_code,coach,coach_code,create_time)
+        values (#{groupCode},#{groupName},#{supervision},#{supervisionCode},#{coach},#{coachCode},#{createTime})
+    </insert>
+
+    <!--    检查小组是否存在-->
+    <select id="checkGroupIsExist" resultType="com.wx.springcloud.model.GroupModel">
+        select * from wx_group where group_code=#{groupCode} or group_name=#{groupName}
+    </select>
+
+<!--    查询所有的小组-->
+    <select id="groupAll" resultType="com.wx.springcloud.model.GroupModel">
+        select * from wx_group
+        <where>
+            1=1
+            <if test="groupName!='' and groupName!=null">
+                and group_name like concat('%',#{groupName},'%')
+            </if>
+            <if test="coach!='全部' and coach!=null">
+                and coach like concat('%',#{coach},'%')
+            </if>
+            <if test="supervision!='全部' and supervision!=null">
+                and supervision like concat('%',#{supervision},'%')
+            </if>
+        </where>
+    </select>
+
+<!--    更新小组的成员数量-->
+    <update id="updateMemberCount">
+        update wx_group set
+        <bind name="aa" value="memberCount+1"/>
+        member_count=#{aa}
+        where group_code=#{groupCode}
+    </update>
+
+    <!--    减少小组的成员数量-->
+    <update id="fillBackMemberCount">
+        update wx_group set
+        <bind name="aa" value="memberCount-1"/>
+        member_count=#{aa}
+        where group_code=#{groupCode}
+    </update>
+<!--    得到成员数量-->
+
+    <select id="getMemberCount" resultType="java.lang.Integer">
+        select wx_group.member_count from wx_group where group_code=#{groupCode}
+    </select>
+
+<!--    小组删除-->
+    <delete id="groupDelete">
+        delete from wx_group where group_code=#{group_code}
+    </delete>
+
+<!--    通过小组标号找到所要编辑的数据-->
+    <select id="findGroupByCode" resultType="com.wx.springcloud.model.GroupModel">
+        select * from wx_group where group_code=#{group_code}
+    </select>
+
+<!--    更新小组信息-->
+    <update id="groupEdit">
+        update wx_group set
+        group_name=#{groupName},
+        supervision=#{supervision},
+        supervision_code=#{supervisionCode},
+        coach=#{coach},
+        coach_code=#{coachCode},
+        update_time=#{updateTime}
+        where group_code=#{groupCode}
+    </update>
+
+<!--    检查更新的小组名是否存在-->
+    <select id="checkGroupName" resultType="com.wx.springcloud.model.GroupModel">
+        select * from wx_group where group_Name=#{groupName} and group_code!=#{groupCode}
+    </select>
+
+</mapper>

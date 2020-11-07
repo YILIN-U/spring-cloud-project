@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="spring-cloud-role8005" />
+        <module name="spring-cloud-user8001" />
+        <module name="spring-cloud-gateway9527" />
+        <module name="spring-cloud-userRole8009" />
+        <module name="spring-cloud-code8013" />
+        <module name="spring-cloud-common" />
+        <module name="spring-cloud-collection8015" />
+        <module name="spring-cloud-busrabbitMQ3344" />
+        <module name="spring-cloud-favor8019" />
+        <module name="spring-cloud-eureka7001" />
+        <module name="spring-cloud-word8025" />
+        <module name="spring-cloud-report8017" />
+        <module name="spring-cloud-checkPresent8011" />
+        <module name="spring-cloud-group8021" />
+        <module name="spring-cloud-rolePermission8007" />
+        <module name="spring-cloud-permission8003" />
+        <module name="spring-cloud-GroupUser8023" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="spring-cloud-oauth9526" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

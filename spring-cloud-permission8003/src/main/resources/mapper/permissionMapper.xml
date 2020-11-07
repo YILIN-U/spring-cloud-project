@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.springcloud.mapper.PermissionMapper">
+
+    <!--    增加权限-->
+    <insert id="permissionAdd">
+        insert into wx_permission (permission_code,permission_name,permission_value,create_time)
+        values (#{permissionCode},#{permissionName},#{permissionValue},#{createTime})
+    </insert>
+
+    <!--    检查权限是否存在-->
+    <select id="checkPermission" resultType="com.wx.springcloud.model.PermissionModel">
+        select * from wx_permission where permission_code=#{permissionCode}
+    </select>
+
+    <!--    更新权限信息-->
+    <update id="permissionUpdate">
+        update wx_permission set
+        permission_code=#{permissionCode},
+        permission_name=#{permissionName},
+        status=#{status},
+        permission_value=#{permissionValue},
+        update_time=#{updateTime}
+        where id=#{id}
+    </update>
+
+    <!--    删除权限-->
+    <delete id="permissionDelete">
+        delete from wx_permission where id=#{id}
+    </delete>
+
+    <!--    查询所有权限-->
+    <select id="getAllPermission" resultType="com.wx.springcloud.model.PermissionModel">
+        select * from wx_permission
+        <where>
+            1=1
+            <if test="permissionCode!='' and permissionCode!=null">
+                and permission_code like concat('%',#{permissionCode},'%')
+            </if>
+            <if test="permissionName!='' and permissionName!=null">
+                and permission_name like concat('%',#{permissionName},'%')
+            </if>
+            <if test="status!=2 and status!=null">
+                and status=#{status}
+            </if>
+        </where>
+    </select>
+<!--    根据id找到编辑的数据-->
+    <select id="findPermissionById" resultType="com.wx.springcloud.model.PermissionModel">
+        select * from wx_permission where id=#{id}
+    </select>
+</mapper>

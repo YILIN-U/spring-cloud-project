@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.springcloud.mapper.UserRoleMapper">
+
+    <!--    新增用户的角色-->
+    <insert id="userRoleAdd">
+        insert into wx_user_role (user_code,role_code)
+        values
+        <foreach collection="roleCodes" item="roleCode" index="index" separator=",">
+            (#{userCode},#{roleCode})
+        </foreach>
+    </insert>
+
+
+    <!--    通过用户编号查询角色-->
+    <select id="getRoleByUserCode" resultType="com.wx.springcloud.model.UserRoleModel">
+        select wr.role_code,wr.role_name from wx_role wr where role_code in(SELECT wur.role_code FROM wx_user_role wur where user_code=#{userCode})
+    </select>
+
+<!--      删除用户相关的角色数据-->
+    <delete id="rolePerDelete">
+        delete from wx_user_role where user_code=#{userCode}
+    </delete>
+
+</mapper>

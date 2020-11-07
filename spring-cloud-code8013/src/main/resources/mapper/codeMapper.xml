@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.springcloud.mapper.CodeMapper">
+<!--从码表中得到所有的学历信息-->
+    <select id="getAllEducation" resultType="com.wx.springcloud.model.CodeModel">
+        select * from wx_code where type='education'
+    </select>
+
+<!--    从码表中得到所有的专业信息-->
+    <select id="getAllMajor"  resultType="com.wx.springcloud.model.CodeModel">
+        select * from wx_code where type='major'
+    </select>
+    <!--    从码表中得到日报的提交和草稿-->
+    <select id="getAllReportStatus"  resultType="com.wx.springcloud.model.CodeModel">
+        select * from wx_code where type='report_status' order by code_order limit 2
+    </select>
+<!--   //    得到日报为查看的状态信息-->
+    <select id="getCheckStatus"  resultType="com.wx.springcloud.model.CodeModel">
+        select * from wx_code where type='report_status' order by code_order desc limit 1
+    </select>
+
+<!--    得到学历的value值-->
+    <select id="getEducationValue" resultType="com.wx.springcloud.model.CodeModel">
+        select * from wx_code where type='education' and code_key=#{codeKey}
+   </select>
+
+    <!--    得到日报状态的value值-->
+    <select id="getValueByStatus" resultType="com.wx.springcloud.model.CodeModel">
+        select * from wx_code where type='report_status' and code_key=#{codeKey}
+    </select>
+
+    <!--    查询所有的点到状态-->
+    <select id="getCheckPresence"  resultType="com.wx.springcloud.model.CodeModel">
+        select * from wx_code where type='check_presence'
+    </select>
+
+    <!--    得到考勤的value值-->
+    <select id="getCheckPresenceValue"  resultType="java.lang.String">
+        select wx_code.code_value from wx_code where type='check_presence' and code_key=#{record}
+    </select>
+
+</mapper>

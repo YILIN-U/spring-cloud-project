@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.springcloud.mapper.UserMapper">
+
+<!--  根据用户名,查询用户信息-->
+    <select id="getUser" resultType="com.wx.springcloud.model.UserModel">
+        select * from wx_user where username=#{username} and user_status=1
+    </select>
+
+<!--    插入用户数据-->
+    <insert id="addUser">
+        insert into wx_user (user_code,username,password,creator,create_time,user_status,education,major,real_name)
+        values (#{userCode},#{username},#{password},#{creator},#{createTime},#{userStatus},#{education},#{major},#{realName})
+    </insert>
+
+<!--    检查用户是否存在-->
+    <select id="checkUser" resultType="com.wx.springcloud.model.UserModel">
+        select * from wx_user where user_code=#{userCode}
+    </select>
+
+<!--    更新用户信息-->
+    <update id="updateUser">
+        update wx_user set
+        user_code=#{userCode},
+        username=#{username},
+        <if test="password!=''">
+            password=#{password},
+        </if>
+        updateor=#{updateor},
+        update_time=#{updateTime},
+        user_status=#{userStatus},
+        education=#{education},
+        major=#{major},
+        real_name=#{realName}
+        where id=#{id}
+    </update>
+
+<!--    删除用户-->
+    <update id="deleteUser">
+        update wx_user set
+        user_delete=0
+        where id=#{id}
+    </update>
+
+<!--    查询所有用户-->
+    <select id="getAllUser" resultType="com.wx.springcloud.model.UserModel">
+        select * from wx_user
+        <where>
+            user_delete=1
+            <if test="userCode!='' and userCode!=null">
+                and user_code like concat('%',#{userCode},'%')
+            </if>
+            <if test="username!='' and username!=null">
+                and user_name like concat('%',#{username},'%')
+            </if>
+            <if test="realName!='' and realName!=null">
+                and real_name like concat('%',#{realName},'%')
+            </if>
+
+            <if test="education!='All' and education!=null">
+                and education like concat('%',#{education},'%')
+            </if>
+
+            <if test="major!='All' and major!=null">
+                and major like concat('%',#{major},'%')
+            </if>
+
+            <if test="userStatus!=2 and userStatus!=null">
+                and user_status=#{userStatus}
+            </if>
+        </where>
+    </select>
+
+<!--    记录登录失败次数-->
+    <update id="addFailLoginCount">
+        update wx_user set
+        login_failure_count=#{loginFailureCount}
+        where id=#{id}
+    </update>
+<!--    冻结用户-->
+    <update id="freezeAccount">
+        update wx_user set
+        user_status=0
+        where id=#{id}
+    </update>
+
+<!--   通过用户编号查询用户信息-->
+    <select id="getUserByUserCode" resultType="com.wx.springcloud.model.UserModel">
+        select * from wx_user where user_code=#{userCode}
+    </select>
+
+<!--    找到角色为督导的所有用户-->
+    <select id="getUserByRoleSupervision" resultType="com.wx.springcloud.model.UserModel">
+        select * from wx_user wu where user_code in(select wur.user_code from wx_user_role wur where role_code='wx_role_supervision')
+    </select>
+
+<!--    //      找到角色为教练的所有用户-->
+    <select id="getUserByRoleCoach" resultType="com.wx.springcloud.model.UserModel">
+        select * from wx_user wu where user_code in(select wur.user_code from wx_user_role wur where role_code='wx_role_coach')
+    </select>
+
+    <!--    //      找到角色为学生的所有用户-->
+    <select id="getUserByRoleStudent" resultType="com.wx.springcloud.model.UserModel">
+        select * from
+        (select * from wx_user wu where user_code in(select wur.user_code from wx_user_role wur where role_code='wx_role_student'))
+        as all_student
+        where user_code not in(select wx_user.user_code from wx_user where user_code in (select wgu.user_code from wx_group_user wgu where group_code=#{groupCode}))
+    </select>
+
+<!--    得到学生通过分组编号  -->
+    <select id="getUseByGroupCode" resultType="com.wx.springcloud.model.UserModel">
+        select * from wx_user where user_code in (select wgu.user_code from wx_group_user wgu where group_code=#{groupCode})
+    </select>
+
+</mapper>
